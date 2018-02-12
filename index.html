@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Title of the document</title>
+</head>
+
+<body>
+
+<h1>Speakeasy</h1>
+<h3>( say the password to see the list )</h3>
+<div>
+  <div id="list">
+    <p></p>
+</div>
+
+
+</div>
+<style>
+h1{
+  font-family: sans-serif;
+  font-size: 50px;
+  text-align: center;
+  margin: 0px;
+  margin-top: 70px;
+  padding: 0px;
+
+}
+h3{
+  font-family: sans-serif;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 0px;
+}
+p{
+  font-family: sans-serif;
+  font-size: 13px;
+  text-align: center;
+
+
+
+  background-color: black;
+  color: white;
+
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
+<script src="p5.speech.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript">
+
+let myRec = new p5.SpeechRec(); // new P5.SpeechRec object
+myRec.continous =true;
+myRec.interim = false;
+
+function setup(){
+  myRec.onResult = showResult;
+  myRec.start();
+}
+
+let bars;
+
+function showResult(){
+if(myRec.resultValue==true){
+  console.log(myRec.resultString);
+  if(myRec.resultString=="show me show me"){
+// let barlist;
+    $(function(){
+        $.getJSON('barname.json')
+        .done( function(data){
+          for(let i=0; i<data.length; i++){
+          bars = data[i].title;
+          console.log(bars);
+
+          let line= document.createElement("p");
+          line.innerHTML = bars;
+          document.getElementById('list').appendChild(line);
+
+          }
+
+        });
+
+    });
+  }
+ }
+}
+</script>
+
+</body>
+
+</html>
